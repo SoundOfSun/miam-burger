@@ -23,6 +23,26 @@ class BurgerBuilder extends Component {
       meat: 0
     },
     totalPrice: 4,
+    purchaseable: false,
+  }
+
+  //Method 3 : Make an order purchaseable
+  updatePurchaseState (ingredients) {
+    // Pass ingredients to get it from add/remove methods - updated version!
+    //Sum up the num of ingredients
+    const sum = Object.keys(ingredients)
+      .map(ingKey => {
+        // returns the value for each key
+        return ingredients[ingKey];
+      })
+      // reduce to return a single num, the sum
+      .reduce((sum, el) => {
+        // sum is the current sum in this iteration
+        // el is the value of they ingKey, so a num
+        return sum + el;
+      }, 0); // starting sum is 0
+    // Now update the state with cond. to be true
+    this.setState({purchaseable: sum > 0});
   }
 
   // Method 1 : Add ingredients
@@ -43,6 +63,8 @@ class BurgerBuilder extends Component {
     const newPrice = oldPrice + priceAddition;
     // Update ingredients & price in state
     this.setState({totalPrice: newPrice, ingredients: updatedIngredients});
+    // Set the order btn purchase state
+    this.updatePurchaseState(updatedIngredients);
   }
 
   // Method 2 : Remove ingredients
@@ -67,6 +89,8 @@ class BurgerBuilder extends Component {
     const newPrice = oldPrice - priceDeduction;
     // Update ingredients & price in state
     this.setState({totalPrice: newPrice, ingredients: updatedIngredients});
+    // Set the order btn purchase state
+    this.updatePurchaseState(updatedIngredients);
   }
 
   render () {
@@ -86,7 +110,8 @@ class BurgerBuilder extends Component {
           ingredientAdded={this.addIngredientHandler}
           ingredientRemoved={this.removeIngredientHandler}
           disabled={disabledInfo}
-          price={this.state.totalPrice} />
+          price={this.state.totalPrice}
+          purchaseable={this.state.purchaseable} />
       </Aux>
     );
   }
