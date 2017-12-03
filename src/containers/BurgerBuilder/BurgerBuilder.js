@@ -43,13 +43,30 @@ class BurgerBuilder extends Component {
     const newPrice = oldPrice + priceAddition;
     // Update ingredients & price in state
     this.setState({totalPrice: newPrice, ingredients: updatedIngredients});
-
-
   }
 
   // Method 2 : Remove ingredients
   removeIngredientHandler = (type) => {
-
+    // Get old ing count
+    const oldCount = this.state.ingredients[type];
+    // Count cannot be negative, if neg, stop here
+    if (oldCount <= 0) {
+      return;
+    }
+    // Calculate updated count
+    const updatedCount = oldCount - 1;
+    // Update Ingredients - immutable way
+    const updatedIngredients = {
+      ...this.state.ingredients
+    };
+    // Acces the type of ingredient to add + set the count value
+    updatedIngredients[type] = updatedCount;
+    // Update price
+    const priceDeduction = INGREDIENT_PRICES[type];
+    const oldPrice = this.state.totalPrice;
+    const newPrice = oldPrice - priceDeduction;
+    // Update ingredients & price in state
+    this.setState({totalPrice: newPrice, ingredients: updatedIngredients});
   }
 
   render () {
@@ -57,7 +74,8 @@ class BurgerBuilder extends Component {
       <Aux>
         <Burger ingredients={this.state.ingredients} />
         <BuildControls
-          ingredientAdded={this.addIngredientHandler} />
+          ingredientAdded={this.addIngredientHandler}
+          ingredientRemoved={this.removeIngredientHandler} />
       </Aux>
     );
   }
