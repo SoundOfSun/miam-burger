@@ -26,6 +26,7 @@ class BurgerBuilder extends Component {
     },
     totalPrice: 4,
     purchaseable: false,
+    purchasing: false
   }
 
   //Method 3 : Make an order purchaseable
@@ -95,6 +96,11 @@ class BurgerBuilder extends Component {
     this.updatePurchaseState(updatedIngredients);
   }
 
+  // Method 4: Order Now popup Modal
+  purchaseHandler = () => {
+    this.setState({purchasing: true});
+  }
+
   render () {
     // Logic for disabled btns
     const disabledInfo = {
@@ -107,7 +113,7 @@ class BurgerBuilder extends Component {
 
     return (
       <Aux>
-        <Modal>
+        <Modal show={this.state.purchasing}>
           <OrderSummary ingredients={this.state.ingredients} />
         </Modal>
         <Burger ingredients={this.state.ingredients} />
@@ -116,7 +122,8 @@ class BurgerBuilder extends Component {
           ingredientRemoved={this.removeIngredientHandler}
           disabled={disabledInfo}
           price={this.state.totalPrice}
-          purchaseable={this.state.purchaseable} />
+          purchaseable={this.state.purchaseable}
+          ordered={this.purchaseHandler} />
       </Aux>
     );
   }
