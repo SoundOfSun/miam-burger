@@ -8,7 +8,7 @@ const sideDrawer = ( props ) => {
   // Conditionally attach some CSS classes for animations
   return (
     <div className={classes.SideDrawer}>
-      <Logo />
+      <Logo height="11%" />
       <nav>
         <NavigationItems />
       </nav>
